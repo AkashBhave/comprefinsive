@@ -1,19 +1,12 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { Pool } from "pg";
 
-const pool = new Pool();
+import sql from "../../../utils/sql";
 
 export default NextAuth({
-  // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
@@ -21,12 +14,10 @@ export default NextAuth({
       async authorize(credentials, req) {
         if (credentials == null) return null;
         try {
-          // you can also use async/await
-          const res = await pool.query(
-            `SELECT * FROM users WHERE username='${credentials.username}' AND password='${credentials.password}';`
-          );
-          if (res.rows.length > 0) {
-            let user = res.rows[0];
+          const users =
+            await sql`SELECT * FROM users WHERE username=${credentials.username} AND password=${credentials.password};`;
+          if (users.length > 0) {
+            let user = users[0];
             return {
               id: user.id,
               email: user.username,
@@ -44,6 +35,6 @@ export default NextAuth({
   ],
   pages: {
     signIn: "/sign-in",
-    newUser: "/sign-up", // New users will be directed here on first sign in (leave the property out if not of interest)
+    newUser: "/sign-up",
   },
 });
