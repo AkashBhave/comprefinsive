@@ -6,9 +6,16 @@ const Header = () => {
   const { data: session } = useSession();
   return (
     <Flex w="100%" px="6" py="5" align="center" justify="space-between">
-      <Text fontWeight="bold" fontSize="xl" color="green.700">
-        Comprefinsive
-      </Text>
+      <NextLink href="/" passHref>
+        <Link
+          fontWeight="bold"
+          fontSize="xl"
+          color="green.700"
+          _focus={{ outline: "none" }}
+        >
+          Comprefinsive
+        </Link>
+      </NextLink>
       {session ? (
         <HStack spacing={4}>
           <Text>
