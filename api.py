@@ -304,13 +304,13 @@ def get_assets(username):
                         'symbol': asset['symbol'],
                         'name': asset['name'],
                         'category': asset['category'],
-                        'base balance': asset['base balance'],
-                        'quote balance': asset['quote balance'],
+                        'baseBalance': asset['base balance'],
+                        'quoteBalance': asset['quote balance'],
                         'change': asset['change']
                     }
                 else:
-                    dedup[asset['symbol']]['base balance'] += asset['base balance']
-                    dedup[asset['symbol']]['quote balance'] += asset['quote balance']
+                    dedup[asset['symbol']]['baseBalance'] += asset['base balance']
+                    dedup[asset['symbol']]['quoteBalance'] += asset['quote balance']
         final = []
         for asset in dedup.values():
             final.append(asset)
