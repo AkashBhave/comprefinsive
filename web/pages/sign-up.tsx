@@ -40,7 +40,7 @@ const SignUpPage = () => {
       if (res.ok) {
         setResult([true, "Sign in successful"]);
         setTimeout(() => {
-          router.push("/");
+          router.push("/overview");
         }, 1000);
       } else {
         setResult([false, "Invalid credentials"]);
