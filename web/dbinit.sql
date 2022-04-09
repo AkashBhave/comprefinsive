@@ -12,3 +12,15 @@ CREATE TABLE users (
 		password varchar(40) NOT NULL,
 		name varchar(40) NOT NULL
 );
+
+CREATE TABLE assets (
+	id UUID PRIMARY KEY,
+	user_id UUID NOT NULL,
+	name varchar(40) NOT NULL,
+	amount int NOT NULL
+);
+
+CREATE TABLE transactions (
+	id UUID PRIMARY KEY,
+	asset_id UUID NOT NULL
+);
