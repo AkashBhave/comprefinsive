@@ -237,11 +237,11 @@ class WalletAuth():
 def root():
     return "Welcome to Comprefinsive!"
 
-@app.route("/<username>")
+@app.route("/<username>", methods=["GET"])
 def get_user(username):
     return f"Hello, {username}!"
 
-@app.route("/<username>/addWallet/<address>")
+@app.route("/<username>/wallet/<address>", methods=["POST"])
 def add_wallet(username, address):
     conn = psycopg2.connect(dbStr, sslmode="verify-full")
     with conn.cursor() as cur:
@@ -249,7 +249,7 @@ def add_wallet(username, address):
         conn.commit()
     return "ok"
 
-@app.route("/<username>/removeWallet")
+@app.route("/<username>/wallet", methods=["DELETE"])
 def remove_wallet(username):
     conn = psycopg2.connect(dbStr, sslmode="verify-full")
     with conn.cursor() as cur:
@@ -257,7 +257,7 @@ def remove_wallet(username):
         conn.commit()
     return "ok"
 
-@app.route("/<username>/removeData")
+@app.route("/<username>", methods=["DELETE"])
 def remove_data(username):
     conn = psycopg2.connect(dbStr, sslmode="verify-full")
     with conn.cursor() as cur:
@@ -266,7 +266,7 @@ def remove_data(username):
         conn.commit()
     return "ok"
 
-@app.route("/<username>/assets")
+@app.route("/<username>/assets", methods=["GET"])
 def get_assets(username):
     print("connecting to db")
     conn = psycopg2.connect(dbStr, sslmode="verify-full")
@@ -335,7 +335,7 @@ def get_assets(username):
 
         return json.dumps(final)
 
-@app.route("/<username>/portfolio")
+@app.route("/<username>/portfolio", methods=["GET"])
 def get_portfolio(username):
     conn = psycopg2.connect(dbStr, sslmode="verify-full")
     with conn.cursor() as cur:
@@ -359,7 +359,7 @@ def get_portfolio(username):
 
         return json.dumps(priceHistory)
 
-@app.route("/<username>/transactions/<symbol>")
+@app.route("/<username>/transactions/<symbol>", methods=["GET"])
 def get_transactions(username, symbol):
     conn = psycopg2.connect(dbStr, sslmode="verify-full")
     with conn.cursor() as cur:
