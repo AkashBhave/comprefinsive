@@ -17,9 +17,9 @@ export default NextAuth({
       credentials: {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
-        name: { label: "Name", type: "text" },
       },
       async authorize(credentials, req) {
+        if (credentials == null) return null;
         try {
           // you can also use async/await
           const res = await pool.query(
@@ -29,7 +29,7 @@ export default NextAuth({
             let user = res.rows[0];
             return {
               id: user.id,
-              username: user.username,
+              email: user.username,
               name: user.name,
             };
           } else {
@@ -42,4 +42,8 @@ export default NextAuth({
       },
     }),
   ],
+  pages: {
+    signIn: "/auth/sign-in",
+    newUser: "/auth/sign-up", // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
 });
