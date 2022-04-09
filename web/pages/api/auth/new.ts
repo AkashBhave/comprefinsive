@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import sql from "../../../utils/sql";
+import sql from "@/utils/sql";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { username, password, name } = req.body;
@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (users.length > 0) {
       return res.status(400).send("User already exists");
     } else {
-      await sql`INSERT INTO users (id, username, password, name) VALUES (uuid_generate_v4(), ${username}, ${password}, ${name});`;
+      await sql`INSERT INTO users (username, password, name) VALUES (${username}, ${password}, ${name});`;
       return res.status(200).send("Sign up successful");
     }
   } catch (e) {

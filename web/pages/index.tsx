@@ -3,8 +3,8 @@ import dynamic from "next/dynamic";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Box, Container, Heading } from "@chakra-ui/react";
 
-import AreaChart from "../components/area-chart";
-import PieChart from "../components/pie-chart";
+import AreaChart from "@/components/area-chart";
+import PieChart from "@/components/pie-chart";
 
 const HomePage: NextPage = () => {
   const { data: session } = useSession();

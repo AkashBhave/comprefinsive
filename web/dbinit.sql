@@ -7,20 +7,16 @@ CREATE DATABASE IF NOT EXISTS comprefinsive;
 USE comprefinsive;
 
 CREATE TABLE users (
-    id UUID PRIMARY KEY,
-		username varchar(20) NOT NULL,
+		username varchar(20) NOT NULL PRIMARY KEY,
 		password varchar(40) NOT NULL,
 		name varchar(40) NOT NULL
 );
 
 CREATE TABLE assets (
-	id UUID PRIMARY KEY,
-	user_id UUID NOT NULL,
-	name varchar(40) NOT NULL,
-	amount int NOT NULL
-);
-
-CREATE TABLE transactions (
-	id UUID PRIMARY KEY,
-	asset_id UUID NOT NULL
+	username varchar(20) NOT NULL,
+	name varchar(100) NOT NULL,
+	symbol varchar(100) NOT NULL,
+	base_amount decimal NOT NULL,
+	quote_amount decimal NOT NULL,
+	PRIMARY KEY (username, symbol)
 );

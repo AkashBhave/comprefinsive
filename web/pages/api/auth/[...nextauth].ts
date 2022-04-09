@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import sql from "../../../utils/sql";
+import sql from "@/utils/sql";
 
 export default NextAuth({
   providers: [
@@ -37,4 +37,5 @@ export default NextAuth({
     signIn: "/sign-in",
     newUser: "/sign-up",
   },
+  secret: process.env.AUTH_SECRET,
 });

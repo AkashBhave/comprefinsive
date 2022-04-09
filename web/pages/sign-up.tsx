@@ -87,7 +87,7 @@ const SignUpPage = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </Box>
-        <Button onClick={submit}>Sign In</Button>
+        <Button onClick={submit}>Sign Up</Button>
         {result != null ? (
           <Alert status={result[0] ? "success" : "error"}>
             <AlertIcon />

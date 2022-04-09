@@ -13,7 +13,7 @@ const Header = () => {
           color="green.700"
           _focus={{ outline: "none" }}
         >
-          Comprefinsive
+          {process.env.NAME}
         </Link>
       </NextLink>
       {session ? (
