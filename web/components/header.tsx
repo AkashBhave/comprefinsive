@@ -24,6 +24,12 @@ const Header = () => {
               {session.user?.name}
             </Text>
           </Text>
+          <NextLink href="/overview" passHref>
+            <Link as={Button}>Overview</Link>
+          </NextLink>
+          <NextLink href="/account" passHref>
+            <Link as={Button}>Account</Link>
+          </NextLink>
           <Button onClick={() => signOut()}>Sign Out</Button>
         </HStack>
       ) : (
