@@ -43,7 +43,7 @@ export default NextAuth({
     }),
   ],
   pages: {
-    signIn: "/auth/sign-in",
-    newUser: "/auth/sign-up", // New users will be directed here on first sign in (leave the property out if not of interest)
+    signIn: "/sign-in",
+    newUser: "/sign-up", // New users will be directed here on first sign in (leave the property out if not of interest)
   },
 });

@@ -49,7 +49,7 @@ const SignInPage = () => {
         justifyContent="center"
         spacing={6}
       >
-        <Heading fontSize="4xl">Log In</Heading>
+        <Heading fontSize="4xl">Sign In</Heading>
         <Box w="full">
           <FormLabel htmlFor="username">Username</FormLabel>
           <Input
