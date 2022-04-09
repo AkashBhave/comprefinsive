@@ -6,7 +6,7 @@ const HomePage: NextPage = () => {
   if (session) {
     return (
       <>
-        <p>Signed in as {session.user?.email}</p>
+        <p>Signed in as {session.user?.name}</p>
         <button onClick={() => signOut()}>Sign out</button>
       </>
     );
