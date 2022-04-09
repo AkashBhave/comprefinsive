@@ -14,8 +14,8 @@ import { AreaProps } from "@/components/area-chart";
 
 export const background = "#3b6978";
 export const backgroundAlt = "#204051";
-export const accentColor = "#edffea";
-export const accentColorDark = "#75daad";
+export const accent = "#edffea";
+export const accentAlt = "#75daad";
 
 // accessors
 const getDate = (d: AppleStock) => new Date(d.date);
@@ -86,8 +86,8 @@ const Chart = ({
         />
         <LinearGradient
           id="area-gradient"
-          from={accentColor}
-          to={accentColor}
+          from={accent}
+          to={accentAlt}
           fromOpacity={0.5}
           toOpacity={0.1}
         />
@@ -96,7 +96,7 @@ const Chart = ({
           scale={stockValueScale}
           width={innerWidth}
           strokeDasharray="1,3"
-          stroke={accentColor}
+          stroke={accent}
           strokeOpacity={0.2}
           pointerEvents="none"
         />
@@ -105,7 +105,7 @@ const Chart = ({
           scale={dateScale}
           height={innerHeight}
           strokeDasharray="1,3"
-          stroke={accentColor}
+          stroke={accent}
           strokeOpacity={0.2}
           pointerEvents="none"
         />

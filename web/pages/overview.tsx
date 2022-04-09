@@ -60,10 +60,15 @@ const OverviewPage: NextPage = () => {
         <Heading as="h2" fontSize="4xl" mb={6}>
           Account Value
         </Heading>
-        <Text fontSize="6xl" fontWeight="bold" color="green.900">
+        <Text
+          fontSize="6xl"
+          fontWeight="bold"
+          fontFamily="JetBrains Mono"
+          color="green.900"
+        >
           $1000.12
         </Text>
-        <Text fontSize="4xl" color="green.500">
+        <Text fontSize="4xl" color="green.500" fontFamily="JetBrains Mono">
           +10.1%
         </Text>
       </Container>
@@ -104,13 +109,18 @@ const OverviewPage: NextPage = () => {
                 .sort((a, b) => b.change - a.change)
                 .map((a) => (
                   <HStack key={a.symbol.toUpperCase()} spacing={4} w="full">
-                    <Badge fontSize="xl" p={2}>
+                    <Badge fontSize="xl" p={2} fontFamily="JetBrains Mono">
                       {a.symbol.toLocaleUpperCase()}
                     </Badge>
                     <Text>{a.name}</Text>
                     <Box flex={1} />
-                    <Text>${a.amount.toFixed(2)}</Text>
-                    <Text color={a.change > 0 ? "green.500" : "red.500"}>
+                    <Text fontFamily="JetBrains Mono">
+                      ${a.amount.toFixed(2)}
+                    </Text>
+                    <Text
+                      fontFamily="JetBrains Mono"
+                      color={a.change > 0 ? "green.500" : "red.500"}
+                    >
                       {a.change > 0 ? "+" : "-"}
                       {Math.abs(a.change * 100).toFixed(1)}%
                     </Text>
@@ -140,13 +150,18 @@ const OverviewPage: NextPage = () => {
                 .sort((a, b) => b.change - a.change)
                 .map((a) => (
                   <HStack key={a.symbol.toUpperCase()} spacing={4} w="full">
-                    <Badge fontSize="xl" p={2}>
+                    <Badge fontSize="xl" p={2} fontFamily="JetBrains Mono">
                       {a.symbol.toLocaleUpperCase()}
                     </Badge>
                     <Text>{a.name}</Text>
                     <Box flex={1} />
-                    <Text>${a.amount.toFixed(2)}</Text>
-                    <Text color={a.change > 0 ? "green.500" : "red.500"}>
+                    <Text fontFamily="JetBrains Mono">
+                      ${a.amount.toFixed(2)}
+                    </Text>
+                    <Text
+                      fontFamily="JetBrains Mono"
+                      color={a.change > 0 ? "green.500" : "red.500"}
+                    >
                       {a.change > 0 ? "+" : "-"}
                       {Math.abs(a.change * 100).toFixed(1)}%
                     </Text>
