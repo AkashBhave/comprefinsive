@@ -95,6 +95,11 @@ const IndexPage = () => {
   const { data: session } = useSession();
   return (
     <Box w="full" h="full" position="relative">
+      <img
+        src="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/challenge_photos/000/772/121/datas/original.gif"
+        style={{ position: "absolute", top: 50, right: 50, opacity: 0.7 }}
+        width="120px"
+      />
       <Box
         position="absolute"
         top={0}
