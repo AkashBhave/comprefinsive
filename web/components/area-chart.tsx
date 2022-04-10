@@ -126,7 +126,8 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
     );
 
     return (
-      <div style={{ border: "1px solid #292c45" }}>
+      // <div style={{ border: "1px solid #292c45" }}>
+      <div>
         <svg width={width} height={height}>
           <rect
             x={0}

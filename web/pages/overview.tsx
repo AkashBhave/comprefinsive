@@ -88,9 +88,9 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
           {Math.abs(displayPercent).toFixed(2)}%
         </Text>
       </Container>
-      <HStack p={8} spacing={10} divider={<StackDivider />} justify="center">
-        <Box as="section" mb={12}>
-          <HStack w="full" fontSize="xl" fontWeight="bold" mb={2} spacing={4}>
+      <HStack p={8} spacing={10} divider={<StackDivider borderColor='#3E4158'/>} pb={0} justify="center">
+        <Box as="section" mb={0}>
+          <HStack w="full" fontSize="xl" fontWeight="bold" mb={3} spacing={4}>
             {[
               ["1W", 7],
               ["1M", 30],
@@ -107,7 +107,7 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
           </HStack>
           <AreaChart
             key={timeframe}
-            width={1000}
+            width={800}
             height={400}
             data={portfolio.slice(-1 * timeframe)}
             sendHoverValue={updateDisplayValue}
@@ -117,14 +117,14 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
           <PieChart width={400} height={400} assets={assets} />
         </Box>
       </HStack>
-      <Divider maxW={1000} mx="auto" my={6} px={8} />
+      <Divider maxW={1000} mx="auto" my={6} px={8} borderColor='#3E4158'/>
       <Container maxW={1200} as="section" textAlign="center" pb={8}>
         <HStack
           w="full"
           align="start"
           justify="center"
           spacing={10}
-          divider={<StackDivider />}
+          divider={<StackDivider borderColor='#3E4158'/>}
         >
           <Box w="50%">
             <Heading as="h3" fontSize="3xl" mb={6}>
