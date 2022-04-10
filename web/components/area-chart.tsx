@@ -53,7 +53,7 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
     tooltipTop = 0,
     tooltipLeft = 0,
     data,
-    sendHoverValue
+    sendHoverValue,
   }: AreaChartProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
     const stock = data.map((d: any) => {
@@ -121,7 +121,9 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
       ) => {
         hideTooltip();
         sendHoverValue(-1);
-    }, [hideTooltip]);
+      },
+      [hideTooltip]
+    );
 
     return (
       <div style={{ border: "1px solid #292c45" }}>
@@ -140,7 +142,9 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
             y={(d) => stockValueScale(getStockValue(d)) ?? 0}
             // yScale={stockValueScale}
             strokeWidth={2}
-            stroke="#2db367"
+            stroke={
+              data[data.length - 1][1] / data[0][1] > 1 ? "#2db367" : "#E53E3E"
+            }
             fill="#000221"
             curve={curveMonotoneX}
           />
@@ -211,7 +215,7 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
                 transform: "translateX(-50%)",
                 fontSize: "20px",
                 backgroundColor: "#000221",
-                color: "#a6a8b4"
+                color: "#a6a8b4",
               }}
             >
               {getDate(tooltipData).toLocaleDateString()}

@@ -14,6 +14,7 @@ import {
   VStack,
   Link,
   Icon,
+  Button,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -41,24 +42,30 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
   const router = useRouter();
   const [displayValue, setDisplayValue] = useState(0);
   const [displayPercent, setDisplayPercent] = useState(0);
+  const [timeframe, setTimeframe] = useState(portfolio.length);
 
   useEffect(() => {
-    setDisplayValue(portfolio[portfolio.length - 1][1]);
+    const slicedPortfolio = portfolio.slice(-1 * timeframe);
+    setDisplayValue(slicedPortfolio[slicedPortfolio.length - 1][1]);
     setDisplayPercent(
-      (100 * portfolio[portfolio.length - 1][1]) / portfolio[0][1] - 100
+      (100 * slicedPortfolio[slicedPortfolio.length - 1][1]) /
+        slicedPortfolio[0][1] -
+        100
     );
-  }, []);
+  }, [timeframe]);
 
   function updateDisplayValue(value: number) {
+    const slicedPortfolio = portfolio.slice(-1 * timeframe);
     if (value < 0) {
-      setDisplayValue(portfolio[portfolio.length - 1][1]);
+      setDisplayValue(slicedPortfolio[slicedPortfolio.length - 1][1]);
       setDisplayPercent(
-        (100 * portfolio[portfolio.length - 1][1]) / portfolio[0][1] - 100
+        (100 * slicedPortfolio[slicedPortfolio.length - 1][1]) /
+          slicedPortfolio[0][1] -
+          100
       );
     } else {
       setDisplayValue(value);
-      setDisplayPercent((100 * value) / portfolio[0][1] - 100);
-      console.log((100 * value) / portfolio[0][1]);
+      setDisplayPercent((100 * value) / slicedPortfolio[0][1] - 100);
     }
   }
 
@@ -83,25 +90,35 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
       </Container>
       <HStack p={8} spacing={10} divider={<StackDivider />} justify="center">
         <Box as="section" mb={12}>
+          <HStack w="full" fontSize="xl" fontWeight="bold" mb={2} spacing={4}>
+            {[
+              ["1W", 7],
+              ["1M", 30],
+              ["1Y", portfolio.length],
+            ].map((t) => (
+              <Text
+                key={t[0]}
+                cursor="pointer"
+                onClick={() => setTimeframe(t[1])}
+              >
+                {t[0]}
+              </Text>
+            ))}
+          </HStack>
           <AreaChart
+            key={timeframe}
             width={1000}
             height={400}
-            data={portfolio}
+            data={portfolio.slice(-1 * timeframe)}
             sendHoverValue={updateDisplayValue}
           />
         </Box>
         <Box as="section">
-          {/* <Heading as="h2" fontSize="4xl" mb={8}>
-            Breakdown
-          </Heading> */}
-          <PieChart width={400} height={400} assets={assets}/>
+          <PieChart width={400} height={400} assets={assets} />
         </Box>
       </HStack>
       <Divider maxW={1000} mx="auto" my={6} px={8} />
       <Container maxW={1200} as="section" textAlign="center" pb={8}>
-        {/* <Heading as="h2" fontSize="4xl" mb={6}>
-          Assets
-        </Heading> */}
         <HStack
           w="full"
           align="start"
@@ -244,7 +261,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     ).data;
     return { props: { assets, portfolio } };
   } catch (e) {
-    console.log(e);
     return { props: { assets: [], portfolio: [] } };
   }
 };
