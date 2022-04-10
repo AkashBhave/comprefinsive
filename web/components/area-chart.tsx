@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from "react";
-import { AreaClosed, Line, Bar } from "@visx/shape";
+import { AreaClosed, Line, LinePath, Bar } from "@visx/shape";
 import appleStock, { AppleStock } from "@visx/mock-data/lib/mocks/appleStock";
 import { curveMonotoneX } from "@visx/curve";
 import { GridRows, GridColumns } from "@visx/grid";
@@ -39,6 +39,7 @@ type AreaChartProps = {
   height: number;
   margin?: { top: number; right: number; bottom: number; left: number };
   data: any;
+  sendHoverValue: (value: number) => void;
 };
 
 const AreaChart = withTooltip<AreaChartProps, TooltipData>(
@@ -52,6 +53,7 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
     tooltipTop = 0,
     tooltipLeft = 0,
     data,
+    sendHoverValue
   }: AreaChartProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
     const stock = data.map((d: any) => {
@@ -106,9 +108,20 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
           tooltipLeft: x,
           tooltipTop: stockValueScale(getStockValue(d)),
         });
+        sendHoverValue(getStockValue(d));
       },
       [showTooltip, stockValueScale, dateScale]
     );
+
+    const myLeaveTooltip = useCallback(
+      (
+        event:
+          | React.TouchEvent<SVGRectElement>
+          | React.MouseEvent<SVGRectElement>
+      ) => {
+        hideTooltip();
+        sendHoverValue(-1);
+    }, [hideTooltip]);
 
     return (
       <div style={{ border: "1px solid #292c45" }}>
@@ -121,11 +134,11 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
             fill="url(#area-background-gradient)"
             rx={14}
           />
-          <AreaClosed<AppleStock>
+          <LinePath<AppleStock>
             data={stock}
             x={(d) => dateScale(getDate(d)) ?? 0}
             y={(d) => stockValueScale(getStockValue(d)) ?? 0}
-            yScale={stockValueScale}
+            // yScale={stockValueScale}
             strokeWidth={2}
             stroke="#2db367"
             fill="#000221"
@@ -141,17 +154,16 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
             onTouchStart={handleTooltip}
             onTouchMove={handleTooltip}
             onMouseMove={handleTooltip}
-            onMouseLeave={() => hideTooltip()}
+            onMouseLeave={myLeaveTooltip}
           />
           {tooltipData && (
             <g>
               <Line
                 from={{ x: tooltipLeft, y: margin.top }}
                 to={{ x: tooltipLeft, y: innerHeight + margin.top }}
-                stroke={accentAlt}
-                strokeWidth={2}
+                stroke="#a6a8b4"
+                strokeWidth={1}
                 pointerEvents="none"
-                strokeDasharray="5,2"
               />
               <circle
                 cx={tooltipLeft}
@@ -178,7 +190,7 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
         </svg>
         {tooltipData && (
           <div>
-            <TooltipWithBounds
+            {/* <TooltipWithBounds
               key={Math.random()}
               top={tooltipTop - 12}
               left={tooltipLeft + 12}
@@ -188,7 +200,7 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
                 .toFixed(2)
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}
-            </TooltipWithBounds>
+            </TooltipWithBounds> */}
             <Tooltip
               top={innerHeight + margin.top - 14}
               left={tooltipLeft}
@@ -198,6 +210,8 @@ const AreaChart = withTooltip<AreaChartProps, TooltipData>(
                 textAlign: "center",
                 transform: "translateX(-50%)",
                 fontSize: "20px",
+                backgroundColor: "#000221",
+                color: "#a6a8b4"
               }}
             >
               {getDate(tooltipData).toLocaleDateString()}

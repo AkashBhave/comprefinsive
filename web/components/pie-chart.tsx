@@ -40,7 +40,7 @@ const PieChart = ({ width, height, margin = defaultMargin }: PieChartProps) => {
   const left = centerX + margin.left;
   const pieSortValues = (a: number, b: number) => b - a;
 
-  const [pieHover, setPieHover] = useState("TEST");
+  const [pieHover, setPieHover] = useState("");
 
   return (
     <div style={{position: "relative"}}>

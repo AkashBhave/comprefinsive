@@ -16,6 +16,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useState, useEffect } from "react";
 
 import AreaChart from "@/components/area-chart";
 import PieChart from "@/components/pie-chart";
@@ -33,6 +34,25 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
 }) => {
   const { data: session } = useSession();
   const router = useRouter();
+  const [displayValue, setDisplayValue] = useState(0);
+  const [displayPercent, setDisplayPercent] = useState(0);
+
+  useEffect(() => {
+    setDisplayValue(portfolio[portfolio.length-1][1]);
+    setDisplayPercent((100*portfolio[portfolio.length - 1][1]/portfolio[0][1]) - 100);
+  }, []);
+
+  function updateDisplayValue(value: number) {
+    if(value < 0){
+      setDisplayValue(portfolio[portfolio.length - 1][1])
+      setDisplayPercent((100*portfolio[portfolio.length - 1][1]/portfolio[0][1]) - 100);
+    } else {
+      setDisplayValue(value);
+      setDisplayPercent((100*value/portfolio[0][1]) - 100);
+      console.log(100*value/portfolio[0][1])
+    }
+  }
+
   return session != null ? (
     <Box as="main">
       <Container as="section" textAlign="center">
@@ -44,19 +64,20 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
           fontWeight="bold"
           fontFamily="JetBrains Mono"
         >
-          $
-          {portfolio == null || portfolio.length == 0
+          {/* {portfolio == null || portfolio.length == 0
             ? "0.00"
-            : `${currency(portfolio[portfolio.length - 1][1])}`}
+            : `${currency(portfolio[portfolio.length - 1][1])}`} */}
+            ${currency(displayValue)}
         </Text>
         <Text fontSize="4xl" color="green.500" fontFamily="JetBrains Mono">
           +
-          {portfolio == null || portfolio.length == 0
+          {/* {portfolio == null || portfolio.length == 0
             ? "0.0"
             : `${(
                 (portfolio[portfolio.length - 1][1] / portfolio[0][1]) *
                 100
-              ).toFixed(1)}`}
+              ).toFixed(1)}`} */}
+            {displayPercent.toFixed(2)}
           %
         </Text>
       </Container>
@@ -65,7 +86,7 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
           {/* <Heading as="h2" fontSize="4xl" mb={8}>
             Performance
           </Heading> */}
-          <AreaChart width={1000} height={400} data={portfolio} />
+          <AreaChart width={1000} height={400} data={portfolio} sendHoverValue={updateDisplayValue}/>
         </Box>
         <Box as="section">
           {/* <Heading as="h2" fontSize="4xl" mb={8}>
@@ -76,9 +97,9 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
       </HStack>
       <Divider maxW={1000} mx="auto" my={6} px={8} />
       <Container maxW={1200} as="section" textAlign="center" pb={8}>
-        <Heading as="h2" fontSize="4xl" mb={6}>
+        {/* <Heading as="h2" fontSize="4xl" mb={6}>
           Assets
-        </Heading>
+        </Heading> */}
         <HStack
           w="full"
           align="start"
