@@ -375,3 +375,11 @@ def get_transactions(username, symbol):
                 })
 
         return json.dumps(res)
+
+@app.after_request 
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    header['Access-Control-Allow-Methods'] = 'GET, POST, DELETE, OPTIONS'
+    # Other headers can be added here if required
+    return response
