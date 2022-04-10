@@ -20,7 +20,12 @@ import { useState, useEffect } from "react";
 
 import AreaChart from "@/components/area-chart";
 import PieChart from "@/components/pie-chart";
-import { ArrowForwardIcon, ArrowLeftIcon } from "@chakra-ui/icons";
+import {
+  ArrowForwardIcon,
+  ArrowLeftIcon,
+  TriangleDownIcon,
+  TriangleUpIcon,
+} from "@chakra-ui/icons";
 
 const currency = (n: number) =>
   n
@@ -38,55 +43,52 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
   const [displayPercent, setDisplayPercent] = useState(0);
 
   useEffect(() => {
-    setDisplayValue(portfolio[portfolio.length-1][1]);
-    setDisplayPercent((100*portfolio[portfolio.length - 1][1]/portfolio[0][1]) - 100);
+    setDisplayValue(portfolio[portfolio.length - 1][1]);
+    setDisplayPercent(
+      (100 * portfolio[portfolio.length - 1][1]) / portfolio[0][1] - 100
+    );
   }, []);
 
   function updateDisplayValue(value: number) {
-    if(value < 0){
-      setDisplayValue(portfolio[portfolio.length - 1][1])
-      setDisplayPercent((100*portfolio[portfolio.length - 1][1]/portfolio[0][1]) - 100);
+    if (value < 0) {
+      setDisplayValue(portfolio[portfolio.length - 1][1]);
+      setDisplayPercent(
+        (100 * portfolio[portfolio.length - 1][1]) / portfolio[0][1] - 100
+      );
     } else {
       setDisplayValue(value);
-      setDisplayPercent((100*value/portfolio[0][1]) - 100);
-      console.log(100*value/portfolio[0][1])
+      setDisplayPercent((100 * value) / portfolio[0][1] - 100);
+      console.log((100 * value) / portfolio[0][1]);
     }
   }
 
   return session != null ? (
     <Box as="main">
       <Container as="section" textAlign="center">
-        {/* <Heading as="h2" fontSize="4xl" mb={6}>
-          Account Value
-        </Heading> */}
+        <Text fontSize="6xl" fontWeight="bold" fontFamily="JetBrains Mono">
+          ${currency(displayValue)}
+        </Text>
         <Text
-          fontSize="6xl"
-          fontWeight="bold"
+          fontSize="4xl"
+          color={displayPercent > 0 ? "green.500" : "red.500"}
           fontFamily="JetBrains Mono"
         >
-          {/* {portfolio == null || portfolio.length == 0
-            ? "0.00"
-            : `${currency(portfolio[portfolio.length - 1][1])}`} */}
-            ${currency(displayValue)}
-        </Text>
-        <Text fontSize="4xl" color="green.500" fontFamily="JetBrains Mono">
-          +
-          {/* {portfolio == null || portfolio.length == 0
-            ? "0.0"
-            : `${(
-                (portfolio[portfolio.length - 1][1] / portfolio[0][1]) *
-                100
-              ).toFixed(1)}`} */}
-            {displayPercent.toFixed(2)}
-          %
+          <Icon
+            as={displayPercent > 0 ? TriangleUpIcon : TriangleDownIcon}
+            mr={2}
+            fontSize="xl"
+          />
+          {Math.abs(displayPercent).toFixed(2)}%
         </Text>
       </Container>
       <HStack p={8} spacing={10} divider={<StackDivider />} justify="center">
         <Box as="section" mb={12}>
-          {/* <Heading as="h2" fontSize="4xl" mb={8}>
-            Performance
-          </Heading> */}
-          <AreaChart width={1000} height={400} data={portfolio} sendHoverValue={updateDisplayValue}/>
+          <AreaChart
+            width={1000}
+            height={400}
+            data={portfolio}
+            sendHoverValue={updateDisplayValue}
+          />
         </Box>
         <Box as="section">
           {/* <Heading as="h2" fontSize="4xl" mb={8}>
@@ -117,7 +119,17 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
                 .sort((a: any, b: any) => b.change - a.change)
                 .map((a: any) => (
                   <HStack key={a.symbol.toUpperCase()} spacing={4} w="full">
-                    <Badge fontSize="md" p={2} fontFamily="JetBrains Mono" style={{width: "10%", backgroundColor: "#262943", color: "#ebebed", borderRadius: "5px"}}>
+                    <Badge
+                      fontSize="md"
+                      p={2}
+                      fontFamily="JetBrains Mono"
+                      style={{
+                        width: "10%",
+                        backgroundColor: "#262943",
+                        color: "#ebebed",
+                        borderRadius: "5px",
+                      }}
+                    >
                       {a.symbol.toLocaleUpperCase()}
                     </Badge>
                     <Text fontSize="lg" align="start">
@@ -130,8 +142,13 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
                     <Text
                       fontFamily="JetBrains Mono"
                       color={a.change > 0 ? "green.500" : "red.500"}
+                      minW={20}
                     >
-                      {a.change > 0 ? "+" : "-"}
+                      <Icon
+                        as={a.change > 0 ? TriangleUpIcon : TriangleDownIcon}
+                        mr={1}
+                        fontSize="md"
+                      />
                       {Math.abs(a.change * 100).toFixed(1)}%
                     </Text>
                     <NextLink
@@ -160,7 +177,17 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
                 .sort((a: any, b: any) => b.change - a.change)
                 .map((a: any) => (
                   <HStack key={a.symbol.toUpperCase()} spacing={4} w="full">
-                    <Badge fontSize="md" p={2} fontFamily="JetBrains Mono" style={{width: "10%", backgroundColor: "#262943", color: "#ebebed", borderRadius: "5px"}}>
+                    <Badge
+                      fontSize="md"
+                      p={2}
+                      fontFamily="JetBrains Mono"
+                      style={{
+                        width: "10%",
+                        backgroundColor: "#262943",
+                        color: "#ebebed",
+                        borderRadius: "5px",
+                      }}
+                    >
                       {a.symbol.toLocaleUpperCase()}
                     </Badge>
                     <Text fontSize="lg">{a.name}</Text>
@@ -172,7 +199,11 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
                       fontFamily="JetBrains Mono"
                       color={a.change > 0 ? "green.500" : "red.500"}
                     >
-                      {a.change > 0 ? "+" : "-"}
+                      <Icon
+                        as={a.change > 0 ? TriangleUpIcon : TriangleDownIcon}
+                        mr={1}
+                        fontSize="md"
+                      />
                       {Math.abs(a.change * 100).toFixed(1)}%
                     </Text>
                     <NextLink
