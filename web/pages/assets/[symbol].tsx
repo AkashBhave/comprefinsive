@@ -1,13 +1,20 @@
+import { useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { getSession } from "next-auth/react";
 import DataTable, { createTheme } from "react-data-table-component";
-import { Box, Container, Text, Icon } from "@chakra-ui/react";
 import {
-  TriangleDownIcon,
-  TriangleUpIcon,
-} from "@chakra-ui/icons";
+  Box,
+  Badge,
+  Container,
+  Heading,
+  HStack,
+  Text,
+  Icon,
+} from "@chakra-ui/react";
+import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import { useEffect } from "react";
 
 type Transaction = {
   symbol: string;
@@ -114,38 +121,53 @@ const AssetPage = ({ transactions }: { transactions: Transaction[] }) => {
   const router = useRouter();
   const { symbol } = router.query;
 
+  const [asset, setAsset] = useState<any>();
+
+  useEffect(() => {
+    const localAssets = localStorage.getItem("assets");
+    if (localAssets != null) {
+      const lAssets = JSON.parse(localAssets);
+      const lAsset = lAssets.find((a: any) => a.symbol.toLowerCase() == symbol);
+      if (lAsset != null) {
+        setAsset(lAsset);
+      }
+    }
+  });
+
   return (
-    <div>
-      {/* <div style={{width: "70%", backgroundColor: "#000221", margin: "auto", marginTop: "5%", marginBottom: "5%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}> */}
-      <div style={{width: "70%", backgroundColor: "#000221", margin: "auto", marginTop: "5%", marginBottom: "5%"}}>
-       <div style={{marginLeft: "25%"}}>
-          <a style={{fontSize: "70px", color: "#ebebed"}}><b>{transactions[0].symbol} Transactions</b></a>
-          {/* <Text
+    <Container fontSize="xl" maxW={1000} textAlign="center">
+      <Heading as="h1" fontSize="4xl" my={10}>
+        Transactions
+      </Heading>
+      {asset ? (
+        <HStack w="full" justify="center" spacing={6} mb={16} mt={8}>
+          <Badge
+            fontSize="5xl"
+            p={2}
             fontFamily="JetBrains Mono"
-            color={a.change > 0 ? "green.500" : "red.500"}
-            minW={20}
+            style={{
+              backgroundColor: "#262943",
+              color: "#ebebed",
+              borderRadius: "5px",
+            }}
           >
-            <Icon
-              as={a.change > 0 ? TriangleUpIcon : TriangleDownIcon}
-              mr={1}
-              fontSize="md"
-            />
-            {Math.abs(a.change * 100).toFixed(1)}%
-          </Text> */}
-        </div>
-      </div>
-      <Container fontSize="xl" maxW={1000}>
-        <DataTable
-          columns={columns}
-          data={transactions}
-          theme="custom"
-          defaultSortFieldId={3}
-          defaultSortAsc={false}
-          highlightOnHover
-          customStyles={customStyles}
-        />
-      </Container>
-    </div>
+            {String(symbol).toUpperCase()}
+          </Badge>
+          <Box>
+            <Heading as="h2">{asset.name}</Heading>
+          </Box>
+        </HStack>
+      ) : null}
+      <DataTable
+        columns={columns}
+        data={transactions}
+        theme="custom"
+        defaultSortFieldId={3}
+        defaultSortAsc={false}
+        highlightOnHover
+        customStyles={customStyles}
+      />
+    </Container>
   );
 };
 

@@ -23,7 +23,6 @@ import AreaChart from "@/components/area-chart";
 import PieChart from "@/components/pie-chart";
 import {
   ArrowForwardIcon,
-  ArrowLeftIcon,
   TriangleDownIcon,
   TriangleUpIcon,
 } from "@chakra-ui/icons";
@@ -34,15 +33,30 @@ const currency = (n: number) =>
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
-  assets,
-  portfolio,
-}) => {
+const OverviewPage: NextPage<{ portfolio: any }> = ({ portfolio }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const [displayValue, setDisplayValue] = useState(0);
   const [displayPercent, setDisplayPercent] = useState(0);
   const [timeframe, setTimeframe] = useState(portfolio.length);
+  const [assets, setAssets] = useState<any>();
+
+  useEffect(() => {
+    if (assets != null) return;
+    const localAssets = localStorage.getItem("assets");
+    if (localAssets != null) {
+      setAssets(JSON.parse(localAssets));
+    } else {
+      if (session?.user?.email == null) return;
+      axios
+        .get(`${process.env.API_URL}/${session?.user?.email}/assets`)
+        .then((res) => {
+          setAssets(res.data);
+          localStorage.setItem("assets", JSON.stringify(res.data));
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [session]);
 
   useEffect(() => {
     const slicedPortfolio = portfolio.slice(-1 * timeframe);
@@ -69,7 +83,7 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
     }
   }
 
-  return session != null ? (
+  return session != null && assets != null ? (
     <Box as="main">
       <Container as="section" textAlign="center">
         <Text fontSize="6xl" fontWeight="bold" fontFamily="JetBrains Mono">
@@ -88,7 +102,13 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
           {Math.abs(displayPercent).toFixed(2)}%
         </Text>
       </Container>
-      <HStack p={8} spacing={10} divider={<StackDivider borderColor='#3E4158'/>} pb={0} justify="center">
+      <HStack
+        p={8}
+        spacing={10}
+        divider={<StackDivider borderColor="#3E4158" />}
+        pb={0}
+        justify="center"
+      >
         <Box as="section" mb={0}>
           <HStack w="full" fontSize="xl" fontWeight="bold" mb={3} spacing={4}>
             {[
@@ -117,14 +137,14 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
           <PieChart width={400} height={400} assets={assets} />
         </Box>
       </HStack>
-      <Divider maxW={1000} mx="auto" my={6} px={8} borderColor='#3E4158'/>
+      <Divider maxW={1000} mx="auto" my={6} px={8} borderColor="#3E4158" />
       <Container maxW={1200} as="section" textAlign="center" pb={8}>
         <HStack
           w="full"
           align="start"
           justify="center"
           spacing={10}
-          divider={<StackDivider borderColor='#3E4158'/>}
+          divider={<StackDivider borderColor="#3E4158" />}
         >
           <Box w="50%">
             <Heading as="h3" fontSize="3xl" mb={6}>
@@ -250,18 +270,15 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
   if (session?.user?.name == null) {
-    return { props: { assets: [], portfolio: [] } };
+    return { props: { portfolio: [] } };
   }
   try {
-    const assets = (
-      await axios.get(`${process.env.API_URL}/${session.user.email}/assets`)
-    ).data;
     const portfolio = (
       await axios.get(`${process.env.API_URL}/${session.user.email}/portfolio`)
     ).data;
-    return { props: { assets, portfolio } };
+    return { props: { portfolio } };
   } catch (e) {
-    return { props: { assets: [], portfolio: [] } };
+    return { props: { portfolio: [] } };
   }
 };
 

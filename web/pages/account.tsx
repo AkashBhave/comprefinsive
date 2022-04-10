@@ -41,6 +41,7 @@ const Account = () => {
       .post(`${process.env.API_URL}/${session.user.email}/wallet/${address}`)
       .then((res) => {
         setResult([true, "Wallet added successfully"]);
+        localStorage.removeItem("assets");
         setAdded(true);
       })
       .catch((err) => setResult([false, "An error occured"]));
@@ -52,6 +53,7 @@ const Account = () => {
       .delete(`${process.env.API_URL}/${session.user.email}/wallet`)
       .then((res) => {
         setResult([true, "Wallet removed successfully"]);
+        localStorage.removeItem("assets");
         setAdded(false);
       })
       .catch((err) => setResult([false, "An error occured"]));
@@ -59,7 +61,7 @@ const Account = () => {
   return session != null ? (
     <Container as="main" maxW={1000}>
       <Box as="section" textAlign="center" mb={8}>
-        <Heading as="h1" fontSize="4xl">
+        <Heading as="h1" fontSize="4xl" my={10}>
           Account
         </Heading>
       </Box>
