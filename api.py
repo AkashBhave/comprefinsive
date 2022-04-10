@@ -327,9 +327,9 @@ def get_assets(username):
             allTxs += walletTxs
         allTxs += coinbaseTxs
         allTxs += robinhoodTxs
-        print(allTxs)
+
         for tx in allTxs:
-            cur.execute("INSERT INTO transactions VALUES (%s, %s, %s, %s, %s)", (username, tx['symbol'], tx['change'], tx['source'], tx['timestamp']))
+            cur.execute("INSERT INTO transactions VALUES (%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING", (username, tx['symbol'], tx['change'], tx['source'], tx['timestamp']))
 
         conn.commit()
 
