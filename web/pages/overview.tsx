@@ -59,6 +59,7 @@ const OverviewPage: NextPage<{ portfolio: any }> = ({ portfolio }) => {
   }, [session]);
 
   useEffect(() => {
+    if (assets == null || session?.user == null) return;
     const slicedPortfolio = portfolio.slice(-1 * timeframe);
     setDisplayValue(slicedPortfolio[slicedPortfolio.length - 1][1]);
     setDisplayPercent(
@@ -69,6 +70,7 @@ const OverviewPage: NextPage<{ portfolio: any }> = ({ portfolio }) => {
   }, [timeframe]);
 
   function updateDisplayValue(value: number) {
+    if (assets == null || session?.user == null) return;
     const slicedPortfolio = portfolio.slice(-1 * timeframe);
     if (value < 0) {
       setDisplayValue(slicedPortfolio[slicedPortfolio.length - 1][1]);
