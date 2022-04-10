@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Pie } from "@visx/shape";
 import {
   Tooltip,
@@ -11,26 +11,30 @@ import { useState } from "react";
 
 const letters = letterFrequency.slice(0, 4);
 const frequency = (d: any) => d.frequency;
+const quoteBalance = (asset: any) => asset.quoteBalance;
+const symbol = (asset: any) => asset.symbol;
 
-const getLetterFrequencyColor = scaleOrdinal({
-  domain: letters.map((l) => l.letter),
-  range: [
-    "#0c59df",
-    "#0e6cd8",
-    "#137bd2",
-    "#138bcb",
-  ],
-});
+const colors = [ 
+  "#0c59df",
+  "#0e6cd8",
+  "#137bd2",
+  "#138bcb",
+]
+
+function getColor(index: number) {
+  return colors[index % colors.length];
+}
 
 const defaultMargin = { top: 20, right: 20, bottom: 20, left: 20 };
 
 export type PieChartProps = {
   width: number;
   height: number;
+  assets: any;
   margin?: typeof defaultMargin;
 };
 
-const PieChart = ({ width, height, margin = defaultMargin }: PieChartProps) => {
+const PieChart = ({ width, height, assets, margin = defaultMargin }: PieChartProps) => {
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
   const radius = Math.min(innerWidth, innerHeight) / 2;
@@ -42,17 +46,19 @@ const PieChart = ({ width, height, margin = defaultMargin }: PieChartProps) => {
 
   const [pieHover, setPieHover] = useState("");
 
+  useEffect(() => {console.log(assets); console.log(letters)}, []);
+
   return (
     <div style={{position: "relative"}}>
       <div>
         {/* <p style={{position: "absolute", fontSize: "30px", color: "ebebed", height: "100%", width: "100%", display: "flex", alignContent: "center", alignItems: "center", justifyContent: "center", zIndex: "1"}}>TESTING</p> */}
-        <p style={{position: "absolute", fontSize: "30px", color: "ebebed", left: "189px", top: "177px"}}>{pieHover}</p>
+        <p style={{position: "absolute", fontSize: "30px", color: "ebebed", left: "170px", top: "175px"}}>{pieHover}</p>
       </div>
       <svg width={width} height={height} style={{zIndex: "10"}}>
         <Group top={top} left={left}>
           <Pie
-            data={letters}
-            pieValue={frequency}
+            data={assets}
+            pieValue={quoteBalance}
             pieSortValues={pieSortValues}
             outerRadius={radius}
             innerRadius={2*radius / 3}
@@ -65,12 +71,12 @@ const PieChart = ({ width, height, margin = defaultMargin }: PieChartProps) => {
                 const [centroidX, centroidY] = pie.path.centroid(arc);
                 const hasSpaceForLabel = arc.endAngle - arc.startAngle >= 0.1;
                 const arcPath = pie.path(arc);
-                const arcFill = getLetterFrequencyColor(letter);
+                const arcFill = getColor(index);
                 return (
                   <g key={`arc-${letter}-${index}`} style={{zIndex: "10"}}>
                     <path d={arcPath || undefined} fill={arcFill} className="arc" 
                     onMouseEnter={() => {
-                      setPieHover(arc.data.letter);
+                      setPieHover(arc.data.symbol);
                     }}
                     onMouseLeave={() => {
                       setPieHover("");

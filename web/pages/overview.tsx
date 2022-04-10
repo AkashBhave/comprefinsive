@@ -94,7 +94,7 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
           {/* <Heading as="h2" fontSize="4xl" mb={8}>
             Breakdown
           </Heading> */}
-          <PieChart width={500} height={400} />
+          <PieChart width={400} height={400} assets={assets}/>
         </Box>
       </HStack>
       <Divider maxW={1000} mx="auto" my={6} px={8} />
