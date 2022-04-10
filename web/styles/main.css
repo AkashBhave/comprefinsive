@@ -27,3 +27,14 @@ body,
     background-position: 0% 50%;
   }
 }
+
+.arc {
+  transition-property: transform, opacity;
+  transition-duration: .3s;
+  transition-timing-function: ease;
+  opacity: 0.8;
+}
+.arc:hover {
+  transform: scale(1.05);
+  opacity: 1.0;
+}
