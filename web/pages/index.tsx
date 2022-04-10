@@ -1,12 +1,13 @@
 import React, { useMemo, useEffect, useState } from "react";
 import NextLink from "next/link";
-import { AreaClosed } from "@visx/shape";
+import { AreaClosed, LinePath } from "@visx/shape";
 import appleStock, { AppleStock } from "@visx/mock-data/lib/mocks/appleStock";
-import { curveMonotoneX } from "@visx/curve";
+import { curveMonotoneX, curveLinear } from "@visx/curve";
 import { GridRows, GridColumns } from "@visx/grid";
 import { scaleTime, scaleLinear } from "@visx/scale";
 import { LinearGradient } from "@visx/gradient";
 import { ParentSize } from "@visx/responsive";
+import { MarkerArrow } from '@visx/marker';
 import { max, extent } from "d3-array";
 import { Box, Button, Heading, HStack, Link } from "@chakra-ui/react";
 
@@ -64,28 +65,17 @@ const Chart = ({ width, height }: { width: number; height: number }) => {
 
   return (
     <div>
-      <svg width={width} height={height}>
+      <svg width={width*6/7} height={height}>
+        <MarkerArrow id="marker-arrow" fill="#fff" refX={2} size={6} />
         <rect
           x={0}
           y={0}
-          width={width}
+          width={width*6/7}
           height={height}
           fill="url(#area-background-gradient)"
           rx={0}
         />
-        <LinearGradient
-          id="area-background-gradient"
-          from={background}
-          to={backgroundAlt}
-        />
-        <LinearGradient
-          id="area-gradient"
-          from={accent}
-          to={accentAlt}
-          fromOpacity={0.5}
-          toOpacity={0.1}
-        />
-        <GridRows
+        {/* <GridRows
           left={margin.left}
           scale={stockValueScale}
           width={innerWidth}
@@ -102,16 +92,17 @@ const Chart = ({ width, height }: { width: number; height: number }) => {
           stroke={accent}
           strokeOpacity={0.2}
           pointerEvents="none"
-        />
-        <AreaClosed<AppleStock>
+        /> */}
+        <LinePath<AppleStock>
           data={stock}
           x={(d) => dateScale(getDate(d)) ?? 0}
           y={(d) => stockValueScale(getStockValue(d)) ?? 0}
-          yScale={stockValueScale}
-          strokeWidth={4}
-          stroke="#8960a3"
+          // yScale={stockValueScale}
+          strokeWidth={3}
+          stroke="#0c59df"
           fill="url(#area-gradient)"
-          curve={curveMonotoneX}
+          curve={curveLinear}
+          markerEnd={'url(#marker-arrow)'}
         />
       </svg>
     </div>
@@ -133,12 +124,12 @@ const IndexPage = () => {
           Comprefinsive
         </Heading>
         <Heading
-          fontSize={{ base: "4xl", xl: "6xl" }}
+          fontSize={{ base: "4xl", xl: "5xl" }}
           fontWeight="normal"
           as="p"
           mb={8}
         >
-          The one-stop shop for your investments.
+          The one-stop shop for all your investments.
         </Heading>
         <HStack spacing={8} color="gray.800">
           <NextLink href="/sign-in" passHref>
