@@ -6,8 +6,6 @@ body,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  background-color: #000221;
-  color: #ebebed;
 }
 
 #hero {
@@ -30,11 +28,11 @@ body,
 
 .arc {
   transition-property: transform, opacity;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   transition-timing-function: ease;
   opacity: 0.8;
 }
 .arc:hover {
   transform: scale(1.05);
-  opacity: 1.0;
+  opacity: 1;
 }

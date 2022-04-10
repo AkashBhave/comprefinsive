@@ -26,7 +26,7 @@ const tooltipStyles = {
   background,
   border: "1px solid white",
   color: "white",
-  "font-size": "20px",
+  fontSize: "20px",
 };
 
 // accessors
@@ -111,7 +111,7 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
     );
 
     return (
-      <div style={{border: "1px solid #292c45"}}>
+      <div style={{ border: "1px solid #292c45" }}>
         <svg width={width} height={height}>
           <rect
             x={0}
