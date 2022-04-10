@@ -36,14 +36,13 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
   return session != null ? (
     <Box as="main">
       <Container as="section" textAlign="center">
-        <Heading as="h2" fontSize="4xl" mb={6}>
+        {/* <Heading as="h2" fontSize="4xl" mb={6}>
           Account Value
-        </Heading>
+        </Heading> */}
         <Text
           fontSize="6xl"
           fontWeight="bold"
           fontFamily="JetBrains Mono"
-          color="green.900"
         >
           $
           {portfolio == null || portfolio.length == 0
@@ -61,18 +60,17 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
           %
         </Text>
       </Container>
-      <Divider maxW={1000} mx="auto" my={6} px={8} />
       <HStack p={8} spacing={10} divider={<StackDivider />} justify="center">
         <Box as="section" mb={12}>
-          <Heading as="h2" fontSize="4xl" mb={8}>
+          {/* <Heading as="h2" fontSize="4xl" mb={8}>
             Performance
-          </Heading>
+          </Heading> */}
           <AreaChart width={1000} height={400} data={portfolio} />
         </Box>
         <Box as="section">
-          <Heading as="h2" fontSize="4xl" mb={8}>
+          {/* <Heading as="h2" fontSize="4xl" mb={8}>
             Breakdown
-          </Heading>
+          </Heading> */}
           <PieChart width={500} height={400} />
         </Box>
       </HStack>
@@ -98,7 +96,7 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
                 .sort((a: any, b: any) => b.change - a.change)
                 .map((a: any) => (
                   <HStack key={a.symbol.toUpperCase()} spacing={4} w="full">
-                    <Badge fontSize="xl" p={2} fontFamily="JetBrains Mono">
+                    <Badge fontSize="md" p={2} fontFamily="JetBrains Mono" style={{width: "10%", backgroundColor: "#262943", color: "#ebebed", borderRadius: "5px"}}>
                       {a.symbol.toLocaleUpperCase()}
                     </Badge>
                     <Text fontSize="lg" align="start">
@@ -141,7 +139,7 @@ const OverviewPage: NextPage<{ assets: any; portfolio: any }> = ({
                 .sort((a: any, b: any) => b.change - a.change)
                 .map((a: any) => (
                   <HStack key={a.symbol.toUpperCase()} spacing={4} w="full">
-                    <Badge fontSize="xl" p={2} fontFamily="JetBrains Mono">
+                    <Badge fontSize="md" p={2} fontFamily="JetBrains Mono" style={{width: "10%", backgroundColor: "#262943", color: "#ebebed", borderRadius: "5px"}}>
                       {a.symbol.toLocaleUpperCase()}
                     </Badge>
                     <Text fontSize="lg">{a.name}</Text>

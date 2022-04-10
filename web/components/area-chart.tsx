@@ -111,7 +111,7 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
     );
 
     return (
-      <div>
+      <div style={{border: "1px solid #292c45"}}>
         <svg width={width} height={height}>
           <rect
             x={0}
@@ -121,44 +121,14 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
             fill="url(#area-background-gradient)"
             rx={14}
           />
-          <LinearGradient
-            id="area-background-gradient"
-            from={background}
-            to={backgroundAlt}
-          />
-          <LinearGradient
-            id="area-gradient"
-            from={accent}
-            to={accentAlt}
-            fromOpacity={0.5}
-            toOpacity={0.1}
-          />
-          <GridRows
-            left={margin.left}
-            scale={stockValueScale}
-            width={innerWidth}
-            strokeDasharray="1,3"
-            stroke={accent}
-            strokeOpacity={0}
-            pointerEvents="none"
-          />
-          <GridColumns
-            top={margin.top}
-            scale={dateScale}
-            height={innerHeight}
-            strokeDasharray="1,3"
-            stroke={accentAlt}
-            strokeOpacity={0.2}
-            pointerEvents="none"
-          />
           <AreaClosed<AppleStock>
             data={stock}
             x={(d) => dateScale(getDate(d)) ?? 0}
             y={(d) => stockValueScale(getStockValue(d)) ?? 0}
             yScale={stockValueScale}
-            strokeWidth={1}
-            stroke="url(#area-gradient)"
-            fill="url(#area-gradient)"
+            strokeWidth={2}
+            stroke="#2db367"
+            fill="#000221"
             curve={curveMonotoneX}
           />
           <Bar

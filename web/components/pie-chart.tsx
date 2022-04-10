@@ -10,10 +10,10 @@ const frequency = (d: any) => d.frequency;
 const getLetterFrequencyColor = scaleOrdinal({
   domain: letters.map((l) => l.letter),
   range: [
-    "rgb(204, 242, 209)",
-    "rgb(178, 234, 195)",
-    "rgb(150, 226, 183)",
-    "rgb(117, 218, 173)",
+    "#0c59df",
+    "#0e6cd8",
+    "#137bd2",
+    "#138bcb",
   ],
 });
 
@@ -43,6 +43,9 @@ const PieChart = ({ width, height, margin = defaultMargin }: PieChartProps) => {
           pieValue={frequency}
           pieSortValues={pieSortValues}
           outerRadius={radius}
+          innerRadius={2*radius / 3}
+          padAngle={0.015}
+          cornerRadius={7}
         >
           {(pie) => {
             return pie.arcs.map((arc, index) => {

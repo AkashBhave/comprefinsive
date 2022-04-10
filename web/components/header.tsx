@@ -9,8 +9,8 @@ const Header = () => {
       <NextLink href="/" passHref>
         <Link
           fontWeight="bold"
-          fontSize="xl"
-          color="green.700"
+          fontSize="2xl"
+          color="#ebebed"
           _focus={{ outline: "none" }}
         >
           {process.env.NAME}
