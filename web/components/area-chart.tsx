@@ -17,16 +17,16 @@ import { max, extent, bisector } from "d3-array";
 
 type TooltipData = AppleStock;
 
-const stock = appleStock.slice(800);
 export const background = "#3b6978";
-export const background2 = "#204051";
-export const accentColor = "#edffea";
-export const accentColorDark = "#75daad";
+export const backgroundAlt = "#204051";
+export const accent = "#edffea";
+export const accentAlt = "#75daad";
 const tooltipStyles = {
   ...defaultStyles,
   background,
   border: "1px solid white",
   color: "white",
+  "font-size": "20px",
 };
 
 // accessors
@@ -38,6 +38,7 @@ export type AreaProps = {
   width: number;
   height: number;
   margin?: { top: number; right: number; bottom: number; left: number };
+  data: any;
 };
 
 const AreaChart = withTooltip<AreaProps, TooltipData>(
@@ -50,8 +51,12 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
     tooltipData,
     tooltipTop = 0,
     tooltipLeft = 0,
+    data,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
+    const stock = data.map((d: any) => {
+      return { date: d[0], close: d[1] };
+    });
 
     // bounds
     const innerWidth = width - margin.left - margin.right;
@@ -119,12 +124,13 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
           <LinearGradient
             id="area-background-gradient"
             from={background}
-            to={background2}
+            to={backgroundAlt}
           />
           <LinearGradient
             id="area-gradient"
-            from={accentColor}
-            to={accentColor}
+            from={accent}
+            to={accentAlt}
+            fromOpacity={0.5}
             toOpacity={0.1}
           />
           <GridRows
@@ -132,7 +138,7 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
             scale={stockValueScale}
             width={innerWidth}
             strokeDasharray="1,3"
-            stroke={accentColor}
+            stroke={accent}
             strokeOpacity={0}
             pointerEvents="none"
           />
@@ -141,7 +147,7 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
             scale={dateScale}
             height={innerHeight}
             strokeDasharray="1,3"
-            stroke={accentColor}
+            stroke={accentAlt}
             strokeOpacity={0.2}
             pointerEvents="none"
           />
@@ -172,7 +178,7 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
               <Line
                 from={{ x: tooltipLeft, y: margin.top }}
                 to={{ x: tooltipLeft, y: innerHeight + margin.top }}
-                stroke={accentColorDark}
+                stroke={accentAlt}
                 strokeWidth={2}
                 pointerEvents="none"
                 strokeDasharray="5,2"
@@ -192,7 +198,7 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
                 cx={tooltipLeft}
                 cy={tooltipTop}
                 r={4}
-                fill={accentColorDark}
+                fill={accentAlt}
                 stroke="white"
                 strokeWidth={2}
                 pointerEvents="none"
@@ -208,7 +214,10 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
               left={tooltipLeft + 12}
               style={tooltipStyles}
             >
-              {`$${getStockValue(tooltipData)}`}
+              {`$${getStockValue(tooltipData)
+                .toFixed(2)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}
             </TooltipWithBounds>
             <Tooltip
               top={innerHeight + margin.top - 14}
@@ -218,6 +227,7 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
                 minWidth: 72,
                 textAlign: "center",
                 transform: "translateX(-50%)",
+                fontSize: "20px",
               }}
             >
               {getDate(tooltipData).toLocaleDateString()}
