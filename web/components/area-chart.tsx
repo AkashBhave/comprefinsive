@@ -17,10 +17,10 @@ import { max, extent, bisector } from "d3-array";
 
 type TooltipData = AppleStock;
 
-export const background = "#3b6978";
-export const backgroundAlt = "#204051";
-export const accent = "#edffea";
-export const accentAlt = "#75daad";
+const background = "#3b6978";
+const backgroundAlt = "#204051";
+const accent = "#edffea";
+const accentAlt = "#75daad";
 const tooltipStyles = {
   ...defaultStyles,
   background,
@@ -34,14 +34,14 @@ const getDate = (d: AppleStock) => new Date(d.date);
 const getStockValue = (d: AppleStock) => d.close;
 const bisectDate = bisector<AppleStock, Date>((d) => new Date(d.date)).left;
 
-export type AreaProps = {
+type AreaChartProps = {
   width: number;
   height: number;
   margin?: { top: number; right: number; bottom: number; left: number };
   data: any;
 };
 
-const AreaChart = withTooltip<AreaProps, TooltipData>(
+const AreaChart = withTooltip<AreaChartProps, TooltipData>(
   ({
     width,
     height,
@@ -52,7 +52,7 @@ const AreaChart = withTooltip<AreaProps, TooltipData>(
     tooltipTop = 0,
     tooltipLeft = 0,
     data,
-  }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
+  }: AreaChartProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
     const stock = data.map((d: any) => {
       return { date: d[0], close: d[1] };

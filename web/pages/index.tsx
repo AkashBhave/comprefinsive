@@ -10,8 +10,6 @@ import { ParentSize } from "@visx/responsive";
 import { max, extent } from "d3-array";
 import { Box, Button, Heading, HStack, Link } from "@chakra-ui/react";
 
-import { AreaProps } from "@/components/area-chart";
-
 export const background = "#3b6978";
 export const backgroundAlt = "#204051";
 export const accent = "#edffea";
@@ -27,12 +25,9 @@ export type ChartProps = {
   margin?: { top: number; right: number; bottom: number; left: number };
 };
 
-const Chart = ({
-  width,
-  height,
-  margin = { top: 0, right: 0, bottom: 0, left: 0 },
-}: AreaProps) => {
+const Chart = ({ width, height }: { width: number; height: number }) => {
   const [stock, setStock] = useState(appleStock.slice(0, 100));
+  const margin = { top: 0, right: 0, bottom: 0, left: 0 };
 
   // bounds
   const innerWidth = width - margin.left - margin.right;
