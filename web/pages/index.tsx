@@ -1,15 +1,15 @@
 import React, { useMemo, useEffect, useState } from "react";
 import NextLink from "next/link";
-import { AreaClosed, LinePath } from "@visx/shape";
+import { LinePath } from "@visx/shape";
+import { useSession } from "next-auth/react";
 import appleStock, { AppleStock } from "@visx/mock-data/lib/mocks/appleStock";
 import { curveMonotoneX, curveLinear } from "@visx/curve";
-import { GridRows, GridColumns } from "@visx/grid";
 import { scaleTime, scaleLinear } from "@visx/scale";
 import { LinearGradient } from "@visx/gradient";
-import { ParentSize } from "@visx/responsive";
-import { MarkerArrow } from '@visx/marker';
+import { MarkerArrow } from "@visx/marker";
 import { max, extent } from "d3-array";
 import { Box, Button, Heading, HStack, Link } from "@chakra-ui/react";
+import { ParentSize } from "@visx/responsive";
 
 export const background = "#3b6978";
 export const backgroundAlt = "#204051";
@@ -65,34 +65,16 @@ const Chart = ({ width, height }: { width: number; height: number }) => {
 
   return (
     <div>
-      <svg width={width*6/7} height={height}>
+      <svg width={(width * 6) / 7} height={height}>
         <MarkerArrow id="marker-arrow" fill="#fff" refX={2} size={6} />
         <rect
           x={0}
           y={0}
-          width={width*6/7}
+          width={(width * 6) / 7}
           height={height}
           fill="url(#area-background-gradient)"
           rx={0}
         />
-        {/* <GridRows
-          left={margin.left}
-          scale={stockValueScale}
-          width={innerWidth}
-          strokeDasharray="1,3"
-          stroke={accent}
-          strokeOpacity={0.2}
-          pointerEvents="none"
-        />
-        <GridColumns
-          top={margin.top}
-          scale={dateScale}
-          height={innerHeight}
-          strokeDasharray="1,3"
-          stroke={accent}
-          strokeOpacity={0.2}
-          pointerEvents="none"
-        /> */}
         <LinePath<AppleStock>
           data={stock}
           x={(d) => dateScale(getDate(d)) ?? 0}
@@ -102,7 +84,7 @@ const Chart = ({ width, height }: { width: number; height: number }) => {
           stroke="#0c59df"
           fill="url(#area-gradient)"
           curve={curveLinear}
-          markerEnd={'url(#marker-arrow)'}
+          markerEnd={"url(#marker-arrow)"}
         />
       </svg>
     </div>
@@ -110,6 +92,7 @@ const Chart = ({ width, height }: { width: number; height: number }) => {
 };
 
 const IndexPage = () => {
+  const { data: session } = useSession();
   return (
     <Box w="full" h="full" position="relative">
       <Box
@@ -131,27 +114,34 @@ const IndexPage = () => {
         >
           The one-stop shop for all your investments.
         </Heading>
-        <HStack spacing={8} color="gray.800">
-          <NextLink href="/sign-in" passHref>
-            <Link
-              as={Button}
-              fontSize="2xl"
-              h={16}
-              _hover={{ textDecoration: "none" }}
-            >
-              Sign In
-            </Link>
-          </NextLink>
-          <NextLink href="/sign-up" passHref>
-            <Link
-              as={Button}
-              fontSize="2xl"
-              h={16}
-              _hover={{ textDecoration: "none" }}
-            >
-              Sign Up
-            </Link>
-          </NextLink>
+        <HStack spacing={8}>
+          {session?.user != null ? (
+            <>
+              <NextLink href="/overview" passHref>
+                <Button variant="outline" as="a" h={16} fontSize="2xl">
+                  Overview
+                </Button>
+              </NextLink>
+              <NextLink href="/account" passHref>
+                <Button variant="outline" as="a" h={16} fontSize="2xl">
+                  Account
+                </Button>
+              </NextLink>
+            </>
+          ) : (
+            <>
+              <NextLink href="/sign-in" passHref>
+                <Button variant="outline" as="a" h={16} fontSize="2xl">
+                  Sign In
+                </Button>
+              </NextLink>
+              <NextLink href="/sign-in" passHref>
+                <Button variant="outline" as="a" h={16} fontSize="2xl">
+                  Sign Up
+                </Button>
+              </NextLink>
+            </>
+          )}
         </HStack>
       </Box>
       <ParentSize>
