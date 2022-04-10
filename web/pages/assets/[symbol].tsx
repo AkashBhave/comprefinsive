@@ -138,7 +138,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     ).data;
     return { props: { transactions } };
   } catch (e) {
-    console.log(e);
     return { props: { transactions: [] } };
   }
 };

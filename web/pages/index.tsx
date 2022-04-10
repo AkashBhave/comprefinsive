@@ -39,7 +39,6 @@ const Chart = ({ width, height }: { width: number; height: number }) => {
       if (offset + 100 >= appleStock.length) clearInterval(morph);
       offset += 1;
       setStock(appleStock.slice(offset, 100 + offset));
-      console.log(offset, 100 + offset);
     }, 150);
     return () => clearTimeout(morph);
   }, []);
