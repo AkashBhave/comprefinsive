@@ -3,7 +3,11 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { getSession } from "next-auth/react";
 import DataTable, { createTheme } from "react-data-table-component";
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Container, Text, Icon } from "@chakra-ui/react";
+import {
+  TriangleDownIcon,
+  TriangleUpIcon,
+} from "@chakra-ui/icons";
 
 type Transaction = {
   symbol: string;
@@ -64,6 +68,7 @@ const AssetPage = ({ transactions }: { transactions: Transaction[] }) => {
           }
           fontFamily="JetBrains Mono"
         >
+          {row.change > 0 ? "+" : ""}
           {row.change.toFixed(4)}
         </Box>
       ),
@@ -110,17 +115,37 @@ const AssetPage = ({ transactions }: { transactions: Transaction[] }) => {
   const { symbol } = router.query;
 
   return (
-    <Container fontSize="xl" maxW={1000}>
-      <DataTable
-        columns={columns}
-        data={transactions}
-        theme="custom"
-        defaultSortFieldId={3}
-        defaultSortAsc={false}
-        highlightOnHover
-        customStyles={customStyles}
-      />
-    </Container>
+    <div>
+      {/* <div style={{width: "70%", backgroundColor: "#000221", margin: "auto", marginTop: "5%", marginBottom: "5%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}> */}
+      <div style={{width: "70%", backgroundColor: "#000221", margin: "auto", marginTop: "5%", marginBottom: "5%"}}>
+       <div style={{marginLeft: "25%"}}>
+          <a style={{fontSize: "70px", color: "#ebebed"}}><b>{transactions[0].symbol} Transactions</b></a>
+          {/* <Text
+            fontFamily="JetBrains Mono"
+            color={a.change > 0 ? "green.500" : "red.500"}
+            minW={20}
+          >
+            <Icon
+              as={a.change > 0 ? TriangleUpIcon : TriangleDownIcon}
+              mr={1}
+              fontSize="md"
+            />
+            {Math.abs(a.change * 100).toFixed(1)}%
+          </Text> */}
+        </div>
+      </div>
+      <Container fontSize="xl" maxW={1000}>
+        <DataTable
+          columns={columns}
+          data={transactions}
+          theme="custom"
+          defaultSortFieldId={3}
+          defaultSortAsc={false}
+          highlightOnHover
+          customStyles={customStyles}
+        />
+      </Container>
+    </div>
   );
 };
 
