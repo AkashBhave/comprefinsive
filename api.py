@@ -1,13 +1,3 @@
-# compute correlation and return investment suggestions during /recommendations
-
-# best use of data? responsible use (read only to coinbase, options to remove from db)
-# best ui/ux
-
-# todo:
-# move data to /data
-# push to git
-# fetch coinbase transactions (not found generic 404 error)
-
 import json, hmac, hashlib, time, requests
 import pprint
 from requests.auth import AuthBase
